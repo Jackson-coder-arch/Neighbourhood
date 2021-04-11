@@ -7,6 +7,29 @@ class NeighbourHood(models.Model):
     counts =models.IntegerField()
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     created_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='created_by')
+
+    @classmethod
+    def get_info(cls):
+        info = cls.objects.all()
+        return info
+
+    class Meta:
+        ordering = ["-pk"]
+
+    @property
+    def save_NeighbourHood(self):
+        self.save()
+
+    def delete_NeighbourHood(self):
+        self.delete()
+
+    @classmethod
+    def search_NeighbourHood_by_name(cls, search_term):
+        NeighbourHood = cls.objects.filter(name_icontains=search_term)
+        return NeighbourHood
+
+
+
  
 
 class User(models.Model):
