@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.http import HttpResponseRedirect
+from .forms import NeighbourHoodForm,BusinessForm,ProfileForm
 from .models import NeighbourHood
 # Create your views here.
 def home(request):
@@ -33,4 +35,21 @@ def business(request):
 
     return render(request,'business.html',{'form':form})
 
+def profile(request, prof_id):
+    user = User.objects.filter(pk=prof_id )
+    profile = Profile.objects.filter(user= prof_id)
 
+    return render(request, 'profile.html', {"profile" : profile}) 
+
+def updateProfile(request,username):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST,request.FILES, instance=request.user.profile)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = ProfileForm(instance=request.user.profile)
+     
+
+    return render(request,'profile.html',{'form':form})
