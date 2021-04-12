@@ -1,3 +1,45 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
-{% load static %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="container">
+    <h1> Add your Hood</h1>
+    <form action="" method="post"  enctype="multipart/form-data" novalidate>
+
+        {% csrf_token %}
+        {% bootstrap_form form layout='inline' %}
+       
+        <button type="submit" class="btn btn-lg btn-success">Add</button>
+    </form>
+
+    {% if obj %}
+        <h3>Succesfully uploaded : {{hood.name}}</h3>
+        <img src="{{ hood.photo.url}}" alt="image" class="img-thumbnail"  >
+        {% endif %}
+        <hr>
+
+      
+        {% for x in img %}
+        {% if forloop.first %}<div class="row ">{% endif %}
+            <div class="col-lg-4 col-md-4 col-12" >
+        <div class="text-center mt-2">
+            <img src="{{x.image.url}}"  height="70%" width="70%" class="img-thumbnail" alt="...">
+            <h2 class="text-center" >{{x.name}}</h2></div>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+        </div>
+        <div class=row>{% endif %}
+        
+            {% if forloop.last %}</div>{% endif %}
+    
+        {% endfor %}
+
+</div>
+
+  
+  
+
+    
+{% endblock %}
