@@ -57,3 +57,23 @@ def updateProfile(request,username):
 
 def details(request):
     return render(request,'details.html')
+
+
+
+def search_project(request):
+    if 'name' in request.GET and request.GET['name']:
+        search_term = request.GET.get("name")
+        searched_posts = Posts.search_by_posts(search_term)
+        
+        message = f'{search_term}'
+    else:
+        message = "You haven't searched for any term"
+    
+    return render(request,'profile.html')
+    
+    context={
+        "message": message,
+        "posts":searched_posts
+    }    
+        
+    return render(request,'search.html',context)
