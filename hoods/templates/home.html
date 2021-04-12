@@ -1,12 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoods</title>
-</head>
-<body>
-    <h1>Does it??</h1>
-</body>
-</html>
+{%extends 'base.html'%}
+{% load bootstrap4 %}
+{% load static%}
+
+{% block content %}
+
+{{block.super}}
+
+
+<!-- Landing Page -->
+<body id="bodyimage">
+    <div class="  banner text-center">
+        <div class="header">
+            <div class="container image">
+                <h1>My Hood, where you get anything you want in this environ</h1>
+                <h3 id="category">Check out and look for any service required</h3>
+        
+            </div>
+            
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid ml-5 pl-5">
+
+    
+
+        <hr>
+        <div class="row">
+            {% for hood in hood %}
+
+            <div class="colum-md-4 my-2 ml-5"> 
+                <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{post.name}}</h5>
+                  <img src="{{post.image.url}}" alt="image" class="card-image">
+                  <p class="card-text">{{post.description}} </p>
+                  <a href="{{post.link}} " class="card-link">{{post.link}} </a>
+                </div>
+              </div>
+    
+            </div>
+            {% endfor %}
+
+        </div>
+       
+    
+   
+   
+
+    </div>
+</body>    
+{% endblock %}
