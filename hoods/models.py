@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 # from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from cloudinary.models import CloudinaryField
 # Create your models here.
@@ -8,6 +13,7 @@ class NeighbourHood(models.Model):
     location = models.CharField(max_length=250)
     photo=CloudinaryField('image')
     counts =models.IntegerField()
+    admin = models.ForeignKey('Profile',on_delete=models.CASCADE,related_name='NeighbourHood')
 
 
     @classmethod
@@ -38,7 +44,18 @@ class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='profile', null = True)
     profile_photo = CloudinaryField('image')
     email = models.EmailField('email',unique=True)
-    estate = models.ForeignKey(NeighbourHood,on_delete=models.CASCADE)
+    estate = models.ForeignKey(NeighbourHood,on_delete=models.SET_NULL, null=True)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        try:
+            instance.profile.save()
+        except ObjectDoesNotExist:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def __str__(self):
         return f'{self.user.username} User'

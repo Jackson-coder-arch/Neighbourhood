@@ -1,0 +1,43 @@
+{%extends 'base.html'%}
+{% load bootstrap4 %}
+{% load static%}
+
+{% block content %}
+
+{{block.super}}
+
+
+<!-- Landing Page -->
+<body id="bodyimage">
+
+    <div class="container-fluid ml-5 pl-5">
+
+    
+
+        <hr>
+        <div class="row">
+            {% for  bizz in bizz %}
+
+            <div class="colum-md-4 my-2 ml-5"> 
+                <div class="card" style="width:28rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{bizz.name}}</h5>
+                  <img src="{{bizz.business_photo.url}}" alt="image" class="img">
+                  <p class="card-text">{{bizz.description}} </p>
+                  <p class="card-text">{{bizz.location}} </p>
+
+                </div>
+              </div>
+    
+            </div>
+            {% endfor %}
+
+        </div>
+       
+    
+   
+   
+
+    </div>
+</body>    
+{% endblock %}

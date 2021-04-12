@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
 from .forms import NeighbourHoodForm,BusinessForm,ProfileForm
-from .models import NeighbourHood
+from .models import NeighbourHood,Business,Profile
 # Create your views here.
+
 def home(request):
     if request.method == 'GET':
         hood = NeighbourHood.get_info()
@@ -20,7 +21,7 @@ def neighbourhood(request):
     else:
         form = NeighbourHoodForm()
 
-    return render(request, 'hood.html',{'form':form})
+    return render(request, 'neighbourhood.html',{'form':form})
 
 def business(request):
     bizz = Business.get_info()
@@ -33,7 +34,7 @@ def business(request):
     else:
         form = BusinessForm()
 
-    return render(request,'business.html',{'form':form})
+    return render(request,'bizz.html',{'form':form})
 
 def profile(request, prof_id):
     user = User.objects.filter(pk=prof_id )
@@ -53,3 +54,6 @@ def updateProfile(request,username):
      
 
     return render(request,'profile.html',{'form':form})
+
+def details(request):
+    return render(request,'details.html')
