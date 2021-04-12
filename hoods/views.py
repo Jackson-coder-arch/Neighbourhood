@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-from .forms import NeighbourHoodForm,BusinessForm,ProfileForm
+from .forms import NeighbourHoodForm,BusinessForm,ProfileForm,PostForm
 from .models import NeighbourHood,Business,Profile
 # Create your views here.
 
@@ -52,28 +52,60 @@ def updateProfile(request,username):
     else:
         form = ProfileForm(instance=request.user.profile)
      
+    return render(request,'profile.html',{'form':form}
+    
 
-    return render(request,'profile.html',{'form':form})
+def posts(request):
+    hood = NeighbourHood.objects.get(id=hood_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.hood =hood
+            post.user =request.user.profile
+            post.save()
+            return redirect('details',hood.id)
+    else:
+        form =PostForm()
+    return render(request,'post.html',{'form':form})
+    
+    
+
+    
+
+
+
+
 
 def details(request):
-    return render(request,'details.html')
+    bizz = Business.objects.filter(hood=id()
+    hood = NeighbourHood.objects.get(id=id)
+    posts= Post.ojects.filter(hood=id).order_by('-post')
+   
+
+    context ={
+        "hood":hood,
+        "posts":posts,
+        "business":business
+    }
+    return render(request,'details.html',context)
 
 
 
-def search_project(request):
-    if 'name' in request.GET and request.GET['name']:
-        search_term = request.GET.get("name")
-        searched_posts = Posts.search_by_posts(search_term)
-        
-        message = f'{search_term}'
+def search_business(request):
+    if request.method == 'GET':
+        name = request.GET.get("title")
+        results = Business.objects.filter(name__icontains=name).all()
+        print(results)
+        message = f'name'
+        params = {
+            'results': results,
+            'message': message
+        }
+    
+        return render(request,'search.html')
+    
     else:
-        message = "You haven't searched for any term"
-    
-    return render(request,'profile.html')
-    
-    context={
-        "message": message,
-        "posts":searched_posts
-    }    
+        message = "You haven't searched for any image category"
         
-    return render(request,'search.html',context)
+    return render(request,'search.html')

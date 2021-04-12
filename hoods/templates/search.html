@@ -14,17 +14,17 @@
             <h2 class="text-center"> Found 0 projects with that username <strong>{{message}}</strong></h2>
 
              {% if posts %}
-            {% for posts  in search %}
+            {% for hood  in search %}
             <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{post.title|title}}</a>
-              <p>{{ post.description }}</p>
-             <img src="{{post.image.url}}" class="img-responsive" alt="Image" class="card-img" width="200px" height="150px">
+              <a class="mr-2" href="#">{{hood.title|title}}</a>
+              <p>{{ hood.description }}</p>
+             <img src="{{hood.photo.url}}" class="img-responsive" alt="Image" class="card-img" width="200px" height="150px">
 
             <hr>
-            <p class="card-text "><img src="{{post.user.profile.profile_picture.url}}" class="nav-img mr-2" alt="">
-                By {{post.user.username|title}} <span style="float:right">{{post.date|date}}</span>
+            <p class="card-text "><img src="{{hood.user.profile.profile_photo.url}}" class="nav-img mr-2" alt="">
+                By {{hood.user.username|title}} <span style="float:right">{{post.date|date}}</span>
             </p>
           </div>
         </article>
