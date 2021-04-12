@@ -20,3 +20,10 @@ def neighbourhood(request):
 
     return render(request, 'hood.html',{'form':form})
 
+def business(request):
+    bizz = 
+    if request.method == 'POST':
+        form = BusinessForm(request.POST, request.FILES)
+        if form.is valid():
+
+
