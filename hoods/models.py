@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from cloudinary.models import CloudinaryField
 # Create your models here.
 class NeighbourHood(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=250)
-    photo = CloudianaryField('image')
+    photo=CloudinaryField('image')
     counts =models.IntegerField()
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     created_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='created_by')
@@ -35,17 +37,27 @@ class NeighbourHood(models.Model):
 
 class User(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    user_photo = CloudianaryField('image')
+    user_photo = CloudinaryField('image')
     email = models.EmailField('email',unique=True)
     neighbourhood = models.ForeignKey(NeighbourHood,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username} User'
+
+    def save_user(self):
+        self.user
+
+    def delete_user(self):
+        self.delete()
 
 
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     neighbourhood = models.ForeignKey(NeighbourHood,on_delete=models.CASCADE)
     description = models.CharField(max_length=250)
+    business_photo = CloudinaryField('image')
     location = models.CharField(max_length=150)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='business_created_by')
 
