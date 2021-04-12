@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 class NeighbourHood(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=250)
+    photo = CloudianaryField('image')
     counts =models.IntegerField()
     admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     created_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='created_by')
