@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from .forms import NeighbourHoodForm,BusinessForm,ProfileForm,PostsForm
 from .models import NeighbourHood,Business,Profile,Posts
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
 
 
 
