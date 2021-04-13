@@ -11,6 +11,7 @@ cloudinary = "*"
 django-registration = "*"
 django-heroku = "*"
 whitenoise = "*"
+gunicorn = "*"
 
 [dev-packages]
 
