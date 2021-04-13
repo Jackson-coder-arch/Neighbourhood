@@ -9,6 +9,7 @@ django-bootstrap4 = "*"
 psycopg2-binary = "*"
 cloudinary = "*"
 django-registration = "*"
+django-heroku = "*"
 
 [dev-packages]
 
