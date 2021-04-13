@@ -1,0 +1,45 @@
+{%extends "base.html"%}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<body style="background-image: url('https://images.unsplash.com/photo-1521386455230-4ceaa25b72be?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTV8fGFjY2Vzc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'); background-repeat: no-repeat; background-size:cover;">
+  <div class="container">
+    <div class="row">
+      <!-- Empty div -->
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        {% if form.errors %}
+          <p> Password or Username is incorrect </p>
+        {% endif %}
+        <div class="panel panel-default">
+  
+          <div class="panel-heading">
+            <h3 class="text-center">Sign In</h3>
+          </div>
+          <div class="panel-body">
+  
+            <form  action="/accounts/login/" method="post">
+              {% csrf_token %}
+              {% bootstrap_form form%}
+  
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-sm" value="Login">
+              </div>
+  
+              <input type="hidden" name="next" value="{{next}}">
+  
+            </form>
+            <p>If you've not signed up. Kindly sign <a href="/accounts/register/">Here</a> </p>
+          </div>
+  
+        </div>
+  
+      </div>
+      <!-- empty div -->
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+
+</body>
+{% endblock %}
