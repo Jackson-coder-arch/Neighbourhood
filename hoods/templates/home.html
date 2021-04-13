@@ -8,39 +8,30 @@
 
 
 <!-- Landing Page -->
-<body id="bodyimage" style="background-image: url('https://images.unsplash.com/photo-1592906316365-1471e916de11?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MzJ8fGVzdGF0ZXN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'); background-size:cover; background-repeat: no-repeat;">
-    <div class="  banner text-center"  >
-        <div class="header">
-            <div class="container image">
-                <h1 class="text-center">My Hood</h1>
-                <h3 id="category">All services need you will get them in our hoods</h3>
-        
-            </div>
-            
-
-            </div>
+<body id="bodyimage" style="background-image: url('https://images.unsplash.com/photo-1592906316365-1471e916de11?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MzJ8fGVzdGF0ZXN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'); background-size:cover; background-repeat: no-repeat; font-family: 'Libre Baskerville', serif;">
+    <div class="jumbotron jumbotron-fluid text-center" style="background-color: rgb(145, 223, 236);" >
+        <div class="container">
+          <h1 class="display-4  "  >Welcome to my Hood</h1>
+          <p class="lead">Be in the loop about everything happening in your neighborhood. From contact information of different handyman to meeting announcements or even alerts.</p>
         </div>
-    </div>
+      </div>
+      <br>
 
     <div class="container-fluid ml-5 pl-5">
 
-    
-
-        <hr>
         <div class="row">
             {% for hood in hood %}
 
-            <div class="colum-md-4 my-2 ml-5"> 
+            <div class="colum-md-4 my-2 ml-5 text-center"> 
                 <div class="card" style="width:28rem;">
                 <div class="card-body">
                   <h5 class="card-title">{{hood.name}}</h5>
-                  <img src="{{hood.photo.url}}" alt="image" class="img">
+                  <img src="{{hood.photo.url}}" alt="image" class="img" width="400px" height="250px">
                   <div class="card-body">
-                    <a href="#" class="card-link">Join Us</a>
-                    <a href="#" class="card-link">Leave</a>
+                    <a href="{% url 'hoods:join_hood' hood.id %}" class="card-link ">Join Us</a>
                   </div>
-                  <p class="card-text">{{hood.count}} </p>
-                  <p class="card-text">{{hood.created_by}} </p>
+                  <!-- <p class="card-text">{{hood.count}} </p>
+                  <p class="card-text">{{hood.created_by}} </p> -->
 
                 </div>
               </div>

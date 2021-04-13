@@ -4,7 +4,9 @@
 
 {% block content %}
     <div class="container">
-        <div class="card" style="width: 18rem;">
+        {% for bizz in business %}
+        
+        <div class="card text-center" style="width: 30rem;">
             <img src="{{bizz.business_photo.url}}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{bizz.name}} </h5>
@@ -13,8 +15,28 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item">{{bizz.location}}</li>
             </ul>
+            <a href="{% url 'hoods:leave_hood' hood.id %}" class="card-link pl-5">Leave</a>
           </div>
+        {% endfor %}
+        <br/>
 
+        <div class="card my-3">
+            {% for posts in posts %}
+            <div class="card-header">
+              Post Details
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{posts.title}}</li>
+              <li class="list-group-item">{{posts.post}}</li>
+              <li class="list-group-item">{{posts.user}}</li>
+            </ul>
+            <br>
+            {% endfor %}
+            
+          </div>
+    
+       
     </div>
+   
 {% endblock content %}
     

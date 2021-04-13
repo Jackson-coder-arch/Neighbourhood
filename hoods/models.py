@@ -99,6 +99,21 @@ class Posts(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
     estate = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
 
+    @classmethod
+    def get_info(cls):
+        info = cls.objects.all()
+        return info
+
+    class Meta:
+        ordering = ["-pk"]
+
+    @property
+    def save_Posts(self):
+        self.save()
+
+    def delete_Posts(self):
+        self.delete()
+
 
 
 

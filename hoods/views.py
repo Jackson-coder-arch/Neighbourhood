@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from .forms import NeighbourHoodForm,BusinessForm,ProfileForm,PostsForm
 from .models import NeighbourHood,Business,Profile,Posts
+
 
 
 
@@ -18,7 +19,7 @@ def neighbourhood(request):
             print('form is valid')
             hood = form.save(commit=False)
             post.save()
-            return redirect('home')
+            return redirect('hoods:home')
     else:
         form = NeighbourHoodForm()
 
@@ -57,13 +58,11 @@ def updateProfile(request,username):
     
 
 def posts(request):
-    hood = NeighbourHood.objects.all()
+    post = Posts.get_info()
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostsForm(request.POST,request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.hood =hood
-            post.user =request.user.profile
             post.save()
             return redirect('details',hood.id)
     else:
@@ -74,8 +73,8 @@ def posts(request):
 
 def details(request,id):
     hood = NeighbourHood.objects.get(id=id)
-    bizz = Business.objects.filter(estate=hood)
-    posts= Post.ojects.filter(hood=id).order_by('-post')
+    business = Business.objects.filter(estate=hood)
+    posts= Posts.objects.filter(estate=id).order_by('-post')
    
 
     context ={
@@ -106,15 +105,15 @@ def search_business(request):
     return render(request,'search.html')
 
 def join_hood(request, id):
-    hood = get_object_or_404(Hood, id=id)
+    hood = get_object_or_404(NeighbourHood, id=id)
     request.user.profile.hood = hood
     request.user.profile.save()
-    messages.success(request, "Welcome to Your Hood!")
+    # messages.success(request, "Welcome to Your Hood!")
     return redirect('hoods:details', hood.id)
 
 def leave_hood(request, id):
-    hood = get_object_or_404(Hood, id=id)
+    hood = get_object_or_404(NeighbourHood, id=id)
     request.user.profile.hood = None
     request.user.profile.save()
-    messages.success(request, "Bye see you again")
+    # messages.success(request, "Bye see you again")
     return redirect("hoods:home")    
