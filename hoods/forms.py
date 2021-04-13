@@ -22,10 +22,9 @@ class BusinessForm(forms.ModelForm):
 class PostsForm(forms.ModelForm):
     class Meta:
         model = Posts
-        fields = ('title','post','user','estate')
+        fields = ('title','post',)
 
 class NewUserForm(UserCreationForm):
-	email = forms.EmailField(required=True)
 
 	class Meta:
 		model = User

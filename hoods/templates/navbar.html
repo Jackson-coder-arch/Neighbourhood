@@ -14,25 +14,25 @@
         </li>
        
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'hoods:posts'%}"  >Post</a>
-        </li>
-        <li class="nav-item">
           <p class="nav-link">Welcome{{user.username}} </p>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Profile
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/accounts/login">Register/Login</a>
-            <a class="dropdown-item" href="/accounts/logout">Logout</a>
-            
-        </li>
-      </ul>
-      {% endif %}
+        {% endif %}
 
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      </ul>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Profile
+        </a>
+       
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="nav-link" href="{% url 'hoods:profile' user.id %}">Profile</a>
+          <a class="dropdown-item" href="/accounts/login">Register/Login</a>
+          <a class="dropdown-item" href="/accounts/logout">Logout</a>
+          
+      </li>
+
+      <form class="form-inline my-2 my-lg-0" action="{% url 'hoods:search_business' %}">
+        <input class="form-control mr-sm-2" name='business' type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>

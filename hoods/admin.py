@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import NeighbourHood,User,Business
+from .models import NeighbourHood,User,Business,Profile
 
 @admin.register(NeighbourHood)
 class NeighbourHood(admin.ModelAdmin):
@@ -12,6 +12,12 @@ class NeighbourHood(admin.ModelAdmin):
 # class User(admin.ModelAdmin):
 #     list_display =('user',)
 
+@admin.register(Profile)
+class Profile(admin.ModelAdmin):
+    search_fields=['user','profile_photo','email']
+
+    class Meta:
+        model = Profile
 
 @admin.register(Business)
 class Business(admin.ModelAdmin):

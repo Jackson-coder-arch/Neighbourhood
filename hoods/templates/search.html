@@ -9,16 +9,16 @@
 <div class="banner-1">
     <div class="cover-1">
             {% if posts %}
-            <h2 class="text-center">Found {{ results|length }} user{{ results|pluralize }}</h2>
+            <h2 class="text-center">Found {{ results.count|length }} Business{{ results.count|pluralize }}</h2>
             {% else %}
-            <h2 class="text-center"> Found 0 projects with that username <strong>{{message}}</strong></h2>
+            <h2 class="text-center"> Found 0 business with that username <strong>{{message}}</strong></h2>
 
-             {% if posts %}
-            {% for hood  in search %}
+             {% if results %}
+            {% for hood  in results %}
             <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{hood.title|title}}</a>
+              <a class="mr-2" href="#">{{hood.name|title}}</a>
               <p>{{ hood.description }}</p>
              <img src="{{hood.photo.url}}" class="img-responsive" alt="Image" class="card-img" width="200px" height="150px">
 

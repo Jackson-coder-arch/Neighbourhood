@@ -74,6 +74,7 @@ class Business(models.Model):
     business_photo = CloudinaryField('image')
     location = models.CharField(max_length=150)
 
+
     @classmethod
     def get_info(cls):
         info = cls.objects.all()

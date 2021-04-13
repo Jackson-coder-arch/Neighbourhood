@@ -5,8 +5,8 @@ from .models import NeighbourHood,Business,Profile,Posts
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import logout
-
 
 
 
@@ -31,25 +31,35 @@ def neighbourhood(request):
 
     return render(request, 'neighbourhood.html',{'form':form})
 
-@login_required(login_url='/accounts/login/')
-def business(request):
-    bizz = Business.get_info()
-    if request.method == 'POST':
-        form = BusinessForm(request.POST, request.FILES)
-        if form.is_valid():
-            bizz = form.save(commit=False)
-            post.save()
-            return redirect('business')
-    else:
-        form = BusinessForm()
+# @login_required(login_url='/accounts/login/')
+# def business(request):
+#     bizz = Business.get_info()
+#     if request.method == 'POST':
+#         form = BusinessForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             bizz = form.save(commit=False)
+#             post.save()
+#             return redirect('business')
+#     else:
+#         form = BusinessForm()
 
-    return render(request,'bizz.html',{'form':form})
+#     return render(request,'bizz.html',{'form':form})
 
 def profile(request, prof_id):
     user = User.objects.filter(pk=prof_id )
     profile = Profile.objects.filter(user= prof_id)
-
-    return render(request, 'profile.html', {"profile" : profile})
+    if request.method =='POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = ProfileForm(instance=request.user.profile)
+    params = {
+        'form': form,
+        "profile" : profile
+    }
+    return render(request, 'profile.html', params)
 
 @login_required(login_url='/accounts/login/')
 def updateProfile(request,username):
@@ -64,31 +74,52 @@ def updateProfile(request,username):
      
     return render(request,'profile.html',{'form':form})
     
-@login_required(login_url='/accounts/login/')
-def posts(request):
-    post = Posts.get_info()
-    if request.method == 'POST':
-        form = PostsForm(request.POST,request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('details',hood.id)
-    else:
-        form =PostsForm()
-    return render(request,'post.html',{'form':form})
+# @login_required(login_url='/accounts/login/')
+# def posts(request,id=id):
+#     post = Posts.get_info()
+#     if request.method == 'POST':
+#         form = PostsForm(request.POST,request.FILES)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.save()
+#             return redirect('hoods:details',post.id)
+#     else:
+#         form =PostsForm()
+#     return render(request,'post.html',{'form':form})
     
     
 @login_required(login_url='/accounts/login/')
 def details(request,id):
-    hood = NeighbourHood.objects.get(id=id)
+    hood = get_object_or_404(NeighbourHood, id=id)
     business = Business.objects.filter(estate=hood)
-    posts= Posts.objects.filter(estate=id).order_by('-post')
-   
+    posts= Posts.objects.filter(estate=hood)
+    if request.method == 'POST':
+        form = PostsForm(request.POST,request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.estate = hood
+            post.user = request.user.profile
+            post.save()
+            return redirect('hoods:details',hood.id)
+    else:
+        form =PostsForm()
+    if request.method == 'POST':
+        b_form = BusinessForm(request.POST, request.FILES)
+        if b_form.is_valid():
+            bizz = b_form.save(commit=False)
+            bizz.estate = hood
+            bizz.user = request.user.profile    
+            bizz.save()
+            return redirect('hoods:details',hood.id)
+    else:
+        b_form = BusinessForm()
 
     context ={
         "hood":hood,
         "posts":posts,
-        "business":business
+        "business":business,
+        "form":form,
+        "b_form":b_form,
     }
     return render(request,'details.html',context)
 
@@ -96,8 +127,8 @@ def details(request,id):
 
 def search_business(request):
     if request.method == 'GET':
-        name = request.GET.get("title")
-        results = Business.objects.filter(name__icontains=name).all()
+        name = request.GET.get("business")
+        results = Business.search_business(name)
         print(results)
         message = f'name'
         params = {
@@ -105,12 +136,12 @@ def search_business(request):
             'message': message
         }
     
-        return render(request,'search.html')
+        return render(request,'search.html',params)
     
     else:
         message = "You haven't searched for any image category"
         
-    return render(request,'search.html')
+    return render(request,'search.html', {' message': message})
 
 @login_required(login_url='/accounts/login/')
 def join_hood(request, id):
