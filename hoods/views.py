@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-from .forms import NeighbourHoodForm,BusinessForm,ProfileForm,PostForm
-from .models import NeighbourHood,Business,Profile
-# Create your views here.
+from .forms import NeighbourHoodForm,BusinessForm,ProfileForm,PostsForm
+from .models import NeighbourHood,Business,Profile,Posts
+
+
 
 def home(request):
     if request.method == 'GET':
@@ -52,11 +53,11 @@ def updateProfile(request,username):
     else:
         form = ProfileForm(instance=request.user.profile)
      
-    return render(request,'profile.html',{'form':form}
+    return render(request,'profile.html',{'form':form})
     
 
 def posts(request):
-    hood = NeighbourHood.objects.get(id=hood_id)
+    hood = NeighbourHood.objects.all()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -66,20 +67,14 @@ def posts(request):
             post.save()
             return redirect('details',hood.id)
     else:
-        form =PostForm()
+        form =PostsForm()
     return render(request,'post.html',{'form':form})
     
     
 
-    
-
-
-
-
-
-def details(request):
-    bizz = Business.objects.filter(hood=id()
+def details(request,id):
     hood = NeighbourHood.objects.get(id=id)
+    bizz = Business.objects.filter(estate=hood)
     posts= Post.ojects.filter(hood=id).order_by('-post')
    
 
@@ -109,3 +104,17 @@ def search_business(request):
         message = "You haven't searched for any image category"
         
     return render(request,'search.html')
+
+def join_hood(request, id):
+    hood = get_object_or_404(Hood, id=id)
+    request.user.profile.hood = hood
+    request.user.profile.save()
+    messages.success(request, "Welcome to Your Hood!")
+    return redirect('hoods:details', hood.id)
+
+def leave_hood(request, id):
+    hood = get_object_or_404(Hood, id=id)
+    request.user.profile.hood = None
+    request.user.profile.save()
+    messages.success(request, "Bye see you again")
+    return redirect("hoods:home")    

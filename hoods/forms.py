@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import NeighbourHood, Business, Profile
+from .models import NeighbourHood, Business, Profile, Posts
 
 class NeighbourHoodForm(forms.ModelForm):
     class Meta:
@@ -17,7 +17,7 @@ class BusinessForm(forms.ModelForm):
         model = Business
         fields = ('name','description','business_photo','location')
 
-class PostForm(forms.ModelForm):
+class PostsForm(forms.ModelForm):
     class Meta:
-        model = Post
-        
+        model = Posts
+        fields = ('title','post',)

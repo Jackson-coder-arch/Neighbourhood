@@ -4,10 +4,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-# from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from cloudinary.models import CloudinaryField
-# Create your models here.
+
 class NeighbourHood(models.Model):
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=250)
@@ -91,12 +89,21 @@ class Business(models.Model):
     def delete_Business(self):
         self.delete()
 
-class Post(models.Model):
+    @classmethod
+    def search_business(cls, name):
+        return cls.objects.filter(name__icontains=name).all()
+
+class Posts(models.Model):
     title = models.CharField(max_length=120, null=True)
-    post = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
-    hood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE, related_name='hood_post')
+    post = models.TextField(max_length=150)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
+    estate = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE)
+
+
+
+
+
+
 # class MyAccountManager(BaseUserManager):
 #     def create_user(self,email,username,password=None):
 #         if not email:
