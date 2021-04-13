@@ -11,6 +11,7 @@ def home(request):
         hood = NeighbourHood.get_info()
     return render(request, 'home.html',{'hood':hood})
 
+@login_required(login_url='/accounts/login/')
 def neighbourhood(request):
     if request.method == 'POST':
 
@@ -25,6 +26,7 @@ def neighbourhood(request):
 
     return render(request, 'neighbourhood.html',{'form':form})
 
+@login_required(login_url='/accounts/login/')
 def business(request):
     bizz = Business.get_info()
     if request.method == 'POST':
@@ -42,8 +44,9 @@ def profile(request, prof_id):
     user = User.objects.filter(pk=prof_id )
     profile = Profile.objects.filter(user= prof_id)
 
-    return render(request, 'profile.html', {"profile" : profile}) 
+    return render(request, 'profile.html', {"profile" : profile})
 
+@login_required(login_url='/accounts/login/')
 def updateProfile(request,username):
     if request.method == 'POST':
         form = ProfileForm(request.POST,request.FILES, instance=request.user.profile)
@@ -56,7 +59,7 @@ def updateProfile(request,username):
      
     return render(request,'profile.html',{'form':form})
     
-
+@login_required(login_url='/accounts/login/')
 def posts(request):
     post = Posts.get_info()
     if request.method == 'POST':
@@ -70,7 +73,7 @@ def posts(request):
     return render(request,'post.html',{'form':form})
     
     
-
+@login_required(login_url='/accounts/login/')
 def details(request,id):
     hood = NeighbourHood.objects.get(id=id)
     business = Business.objects.filter(estate=hood)
@@ -104,6 +107,7 @@ def search_business(request):
         
     return render(request,'search.html')
 
+@login_required(login_url='/accounts/login/')
 def join_hood(request, id):
     hood = get_object_or_404(NeighbourHood, id=id)
     request.user.profile.hood = hood
@@ -111,6 +115,8 @@ def join_hood(request, id):
     # messages.success(request, "Welcome to Your Hood!")
     return redirect('hoods:details', hood.id)
 
+
+@login_required(login_url='/accounts/login/')
 def leave_hood(request, id):
     hood = get_object_or_404(NeighbourHood, id=id)
     request.user.profile.hood = None
