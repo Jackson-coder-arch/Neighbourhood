@@ -10,6 +10,7 @@ psycopg2-binary = "*"
 cloudinary = "*"
 django-registration = "*"
 django-heroku = "*"
+whitenoise = "*"
 
 [dev-packages]
 
