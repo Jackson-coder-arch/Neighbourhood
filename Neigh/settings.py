@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY','SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','.herokuapp.com']
+ALLOWED_HOSTS = []
 
 ALLOWED_HOST ='*'
 # Application definition
@@ -92,7 +92,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST':os.environ.get('DB_HOST'),
-        'PORT':os.environ.get('DB_PORT')
+        'PORT':''
     }
 }
 
